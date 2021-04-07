@@ -1,0 +1,494 @@
+.home-content {
+  padding: 0 0 0 50px;
+  width: calc(100% - 160px);
+
+  @media(max-width: 960px) {
+    width: 100%;
+    padding: 0;
+  }
+
+  .home-banner {
+
+    @media(max-width: 640px) {
+      min-height: 530px;
+
+      img {
+        height: 100%;
+        object-fit: cover;
+        min-height: 530px;
+      }
+    }
+
+    .main-heading {
+      display: flex;
+
+      @media(max-width: 640px) {
+        margin: 0 0 29px;
+      }
+
+      .title {
+        width: 73.5%;
+        position: relative;
+        background: #FAFAF4;
+        padding: 40px 40px 75px 0;
+        display: flex;
+        transform: translateY(-148px);
+
+        @media(max-width: 1400px) {
+          padding: 40px 40px 40px 0;
+        }
+
+        @media(max-width: 1200px) {
+          transform: translateY(-100px);
+        }
+
+        @media(max-width: 640px) {
+          width: 100%;
+          margin: 0 8px;
+          transform: translateY(-152px);
+          padding: 14px 10px 25px 17px;
+        }
+
+        & > div {
+          position: relative;
+
+          &:after {
+            content: "";
+            width: 37px;
+            height: 37px;
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: url("../img/svg/decor4.svg") center no-repeat;
+          }
+        }
+
+        &:after {
+          content: "";
+          position: absolute;
+          top: 100%;
+          left: 96px;
+          width: 175px;
+          height: 70px;
+          background: url("../img/svg/decor-img.svg") center no-repeat;
+
+          @media(max-width: 640px) {
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 153px;
+            height: 155px;
+            background: url("../img/svg/title-icon.svg") center no-repeat;
+            background-size: contain;
+          }
+        }
+
+        &:before {
+          content: "";
+          width: 96px;
+          height: 98px;
+          min-width: 96px;
+          margin: 0 57px 0 0;
+          background: url("../img/svg/title-icon.svg") center no-repeat;
+          background-size: contain;
+
+          @media(max-width: 1200px) {
+            width: 70px;
+            height: 72px;
+            min-width: 70px;
+            margin: 0 20px 0 0;
+          }
+
+          @media(max-width: 640px) {
+            display: none;
+          }
+        }
+
+        h1 {
+          font-weight: 600;
+          font-size: 70px;
+          line-height: 100%;
+          color: #2A2928;
+          margin: 0 0 54px 0;
+          padding: 0 40px 0 0;
+
+          @media(max-width: 1400px) {
+            font-size: 52px;
+            margin: 0 0 40px 0;
+          }
+
+          @media(max-width: 1200px) {
+            font-size: 40px;
+            margin: 0 0 36px 0;
+          }
+
+          @media(max-width: 640px) {
+            margin: 40px 0 36px 0;
+          }
+
+          @media(max-width: 425px) {
+            position: relative;
+            padding: 0;
+            margin: 40px 0 70px 0;
+          }
+
+          @media(max-width: 350px) {
+            font-size: 36px;
+          }
+
+          span {
+            font-family: "Miama Nueva", sans-serif;
+            font-style: italic;
+            font-weight: 500;
+            font-size: 50px;
+            line-height: 100%;
+            color: #BE3E18;
+
+            @media(max-width: 1400px) {
+              font-size: 36px;
+            }
+
+            @media(max-width: 1200px) {
+              font-size: 30px;
+            }
+
+            @media(max-width: 425px) {
+              position: absolute;
+              top: 53px;
+              left: 110px;
+              max-width: 180px;
+            }
+          }
+        }
+
+        p {
+          font-family: "Poppins", sans-serif;
+          font-style: normal;
+          font-weight: 500;
+          font-size: 18px;
+          line-height: 178%;
+          display: flex;
+          align-items: center;
+          color: #000000;
+          max-width: 410px;
+        }
+      }
+    }
+
+    .title-img {
+      width: 26.5%;
+
+      @media(max-width: 640px) {
+        display: none;
+      }
+    }
+  }
+
+}
+
+.popular-dishes {
+  margin: 0 30px 209px;
+
+  @media(max-width: 768px) {
+    margin: 0 24px 150px;
+  }
+
+  .popular-dishes_heading {
+    margin: 0 0 70px;
+
+    @media(max-width: 1400px) {
+      margin: 0 0 50px;
+    }
+
+    h2 {
+      font-weight: 600;
+      font-size: 56px;
+      line-height: 107%;
+      color: #2A2928;
+      margin: 0 0 21px 0;
+
+      @media(max-width: 1400px) {
+        font-size: 42px;
+        margin: 0 0 12px 0;
+      }
+
+      @media(max-width: 1200px) {
+        font-size: 35px;
+      }
+
+      @media(max-width: 640px) {
+        margin: 0 0 20px 0;
+      }
+    }
+
+    p {
+      font-family: "Miama Nueva", sans-serif;
+      font-style: italic;
+      font-weight: 500;
+      font-size: 35px;
+      line-height: 100%;
+      color: #BE3E18;
+
+      @media(max-width: 1400px) {
+        font-size: 25px;
+      }
+
+      @media(max-width: 1200px) {
+        font-size: 25px;
+      }
+    }
+  }
+
+  .popular-dishes_card {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 0 103px -27px;
+
+    @media(max-width: 960px) {
+      margin: 0 0 20px -27px;
+    }
+  }
+}
+
+.link-all-product {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  &:after, &:before {
+    content: "";
+    width: 50%;
+    height: 1px;
+    background: #DA521F;
+
+    @media(max-width: 640px) {
+      display: none;
+    }
+  }
+
+  a {
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 100%;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: space-between;
+    text-transform: uppercase;
+    color: #F8F2E7;
+    background: #DA521F;
+    max-width: 322px;
+    min-width: 322px;
+    padding: 16px;
+    margin: 0 50px;
+    transition: .2s;
+
+    @media(max-width: 640px) {
+      margin: 0 auto;
+    }
+
+    &:hover {
+      background: #00B2BF;
+
+      &:after, &:before {
+        background: url("../img/svg/link-icon2.svg") center no-repeat;
+      }
+    }
+
+    &:after, &:before {
+      content: "";
+      width: 20px;
+      min-width: 20px;
+      height: 22px;
+      transition: .2s;
+      background: url("../img/svg/link-icon.svg") center no-repeat;
+    }
+  }
+
+}
+
+.about-faiza {
+  margin: 0 0 90px -50px;
+  background: url("../img/jpg/img.jpg") left no-repeat;
+  background-size: contain;
+
+  @media(max-width: 960px) {
+    margin: 0 0 60px 0;
+  }
+
+  @media(max-width: 768px) {
+    background: url(../img/jpg/img.jpg) left bottom no-repeat;
+  }
+
+  .about-faiza_content {
+    display: flex;
+    width: calc(100% - 54px);
+    transform: translateY(-80px);
+    margin: 0 0 0 54px;
+
+    @media(max-width: 960px) {
+      margin: 0;
+      width: 100%;
+    }
+
+    @media(max-width: 768px) {
+      flex-direction: column-reverse;
+    }
+
+    .about-faiza_left {
+      width: 53%;
+
+      @media(max-width: 768px) {
+        width: calc(100% - 24px);
+        margin: -37px 0 0 24px;
+      }
+
+      .about-faiza_description {
+        position: relative;
+        background: #009EAA;
+        padding: 94px 80px 30px;
+
+        @media(max-width: 425px) {
+          padding: 104px 26px 95px 32px;
+        }
+
+        &:after, &:before {
+          content: "";
+          position: absolute;
+          top: 30px;
+          left: 30px;
+          width: 45px;
+          height: 45px;
+          background: url("../img/svg/about-icon.svg") center no-repeat;
+
+          @media(max-width: 425px) {
+            left: 10px;
+          }
+        }
+
+        &:before {
+          right: 30px;
+          left: auto;
+          transform: rotate(90deg);
+
+          @media(max-width: 425px) {
+            right: 10px;
+          }
+        }
+
+        h2 {
+          font-weight: 600;
+          font-size: 55px;
+          line-height: 100%;
+          text-transform: uppercase;
+          color: #F8F2E7;
+          margin: 0 0 24px 0;
+
+          @media(max-width: 1200px) {
+            font-size: 40px;
+            margin: 0 0 20px 0;
+          }
+
+          &:after, &:before {
+            content: "";
+            position: absolute;
+            bottom: 30px;
+            left: 30px;
+            width: 45px;
+            height: 45px;
+            transform: rotate(-90deg);
+            background: url("../img/svg/about-icon.svg") center no-repeat;
+
+            @media(max-width: 425px) {
+              left: 10px;
+            }
+          }
+
+          &:before {
+            right: 30px;
+            left: auto;
+            transform: rotate(180deg);
+
+            @media(max-width: 425px) {
+              right: 10px;
+            }
+          }
+        }
+
+        .text {
+          font-family: "Poppins", sans-serif;
+          font-style: normal;
+          font-weight: normal;
+          font-size: 16px;
+          line-height: 200%;
+          display: flex;
+          align-items: center;
+          color: #FAF6EF;
+          margin: 0 0 51px;
+
+          @media(max-width: 1200px) {
+            line-height: 187%;
+            margin: 0 0 30px;
+          }
+        }
+
+        .about-faiza_link {
+
+          a {
+            max-width: 322px;
+            font-weight: 600;
+            font-size: 20px;
+            line-height: 100%;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            justify-content: space-between;
+            text-transform: uppercase;
+            color: #F8F2E7;
+            padding: 16px;
+            margin: 0 auto;
+            transition: .2s;
+
+            &:hover {
+              background: #F8F2E7;
+              color: #2A2928;
+            }
+
+            &:after, &:before {
+              content: "";
+              width: 20px;
+              min-width: 20px;
+              height: 22px;
+              background: url("../img/svg/link-icon.svg") center no-repeat;
+            }
+          }
+        }
+      }
+    }
+
+    .about-faiza_right {
+      width: 47%;
+
+      @media(max-width: 768px) {
+        width: 100%;
+      }
+    }
+  }
+}
+
+.logo-top-mobile {
+  display: none;
+
+  @media(max-width: 640px) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #FAFAF4;
+    height: 64px;
+    width: 100%;
+
+    img {
+      width: 108px;
+    }
+  }
+}

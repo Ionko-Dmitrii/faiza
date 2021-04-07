@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}about us{% endblock %}
+{% block mainClass %}about-us{% endblock %}
+
+{% block content %}
+  <section class="about-us_banner">
+    {% if about_us.banner %}
+      <img src="{{ about_us.banner.url }}" alt="load img"/>
+    {% endif %}
+  </section>
+  <section class="about-us_content">
+    <h1>О Фаизе</h1>
+    <div class="about-us_description">
+      <div class="text sticker-year">{{ about_us.description_one|safe }}</div>
+      <div class="text sticker-users">{{ about_us.description_two|safe }}</div>
+      <div class="about-us_slider">
+        <div class="owl-carousel">
+          {% for i in slider_one %}
+            <div class="slide-text">{{ i.text }}</div>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="text">{{ about_us.description_three|safe }}</div>
+      <div class="about-us_slider-img">
+        <div class="owl-carousel">
+          {% for i in slider_two %}
+            <div class="slide-text">
+              <img src="{{ i.image.url }}" alt="load img"/>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="text">{{ about_us.description_four|safe }}</div>
+      <div class="about-us_slider-img">
+        <div class="owl-carousel">
+          {% for i in slider_three %}
+            <div class="slide-text">
+              <img src="{{ i.image.url }}" alt="load img"/>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="text sticker-halal">
+        <p>Немаловажным является то, что заведение соответствует всем нормам
+          Халал.</p>
+        <p>У нас успешно работает служба доставки. Вам оперативно доставят
+          любимые блюда из нашего меню.</p>
+        <p>Мы всегда рады снова принять Вас в любом из наших заведений!</p>
+      </div>
+      {% for i in categories %}
+        {% if forloop.first %}
+          <div class="link-all-product">
+            <a href="{{ i.get_absolute_url }}">Перейти в меню</a>
+          </div>
+        {% endif %}
+      {% endfor %}
+      <div class="about-us_decor">
+        <div class="decor"></div>
+      </div>
+    </div>
+  </section>
+{% endblock %}
+
+{% block js %}
+  <script>
+    $(document).ready(function () {
+      $(".owl-carousel").owlCarousel({
+        items: 1,
+        nav: true,
+        margin: 20,
+        navText: "",
+        loop: true,
+      });
+    });
+
+    $(document).ready(function () {
+
+
+    })
+  </script>
+{% endblock %}

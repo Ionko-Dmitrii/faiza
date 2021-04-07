@@ -1,0 +1,14 @@
+@import 'base/_base';
+@import 'include/_header';
+@import 'include/_footer';
+@import 'components/owl-carousel';
+@import 'include/dish-card';
+@import 'include/dish-card_detail';
+@import 'include/modal-ordering';
+
+
+//pages
+
+@import 'page/index';
+@import 'page/menu-page';
+@import 'page/about-us';

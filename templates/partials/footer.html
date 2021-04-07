@@ -1,0 +1,40 @@
+{% load static %}
+
+<footer class="footer">
+  <div class="footer-contact">
+    <div class="footer-contact_left">
+      {% for item in contact %}
+        <div class="contact-block">
+          <h3>{{ item.name }}</h3>
+          <a href="tel:{{ item.phone }}">
+            {{ item.phone }}</a>
+          <p>{{ item.address }}</p>
+        </div>
+      {% endfor %}
+    </div>
+    <div class="footer-contact_right">
+      <div class="contact-block">
+        <h3>График</h3>
+        <p>Пн-Вс.</p>
+        <p>09:00 – 20:00</p>
+      </div>
+      <div class="contact-block">
+        <h3>Доставка</h3>
+        <p>Ковер-Самолет</p>
+        <p>Namba Food</p>
+      </div>
+    </div>
+  </div>
+  <div class="footer-logo">
+    <a href="{% url 'main-page' %}" class="logo">
+      <img src="{% static 'img/svg/logo3.svg' %}" alt="load img"/>
+    </a>
+    <div class="logo-two">
+      <img src="{% static 'img/svg/llogo-two.svg' %}" alt="load img"/>
+    </div>
+  </div>
+  <div class="footer-info">
+    <a href="#">©Кафе «Фаиза» 2020</a>
+    <a href="#">Создано в Breez</a>
+  </div>
+</footer>

@@ -1,0 +1,83 @@
+{% load static %}
+
+{% if product_list %}
+  {% for product in product_list %}
+    <div class="cart-product cart-product__ajax">
+      <div class="cart-product_img">
+        <img src="{{ product.image.url }}" alt="load img"/>
+      </div>
+      <div class="cart-product_heading">
+        <h3>{{ product.title }}</h3>
+        <div class="dish-card_description">
+          <div class="cost-dish-all">
+            <div class="cost-dish_number">
+              <div class="cost-dish cart-portion-selection active">
+                <span>{{ product.portion }}/</span>
+                <span>{{ product.price }}c</span>
+              </div>
+              <div class="number-block show">
+                <div class="minus minus-js button-count-ajax"
+                     data-url="{% url 'update_quantity' product.id %}"></div>
+                <div class="input">
+                  <input type="text" value="1" min="1" max="9"/>
+                </div>
+                <div class="plus plus-js button-count-ajax"
+                     data-url="{% url 'update_quantity' product.id %}"></div>
+              </div>
+            </div>
+            {% if product.portion_two %}
+              <div class="cost-dish_number">
+                <div class="cost-dish cart-portion-selection">
+                  <span>{{ product.portion }}/</span>
+                  <span>{{ product.price }}c</span>
+                </div>
+                <div class="number-block">
+                  <div class="minus minus-js button-count-ajax"
+                       data-url="{% url 'update_quantity' product.id %}"></div>
+                  <div class="input">
+                    <input type="text" value="1" min="1" max="9"/>
+                  </div>
+                  <div class="plus plus-js button-count-ajax"
+                       data-url="{% url 'update_quantity' product.id %}"></div>
+                </div>
+              </div>
+            {% endif %}
+          </div>
+          <div class="remove-card" data-url="{% url 'remove_url' product.id %}"
+               data-product-id="{{ product.id }}"></div>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+  <div class="cart-product cart-product-container">
+    <div class="cart-product_img">
+      <img src="{% static 'img/jpg/conten.jpg' %}" alt="load img"/>
+    </div>
+    <div class="cart-product_heading">
+      <h3>Одноразовая посуда</h3>
+      <div class="dish-card_description">
+        <div class="cost-dish-all">
+          <div class="cost-dish_number">
+            <div class="cost-dish cart-portion-selection active">
+              <span>1шт/</span>
+              <span>8c</span>
+            </div>
+            <div class="number-block show">
+              <div class="minus minus-js"
+                   style="visibility: hidden; opacity: 0"></div>
+              <div class="input">
+                <input type="text" readonly value="1" min="1" max="9"/>
+              </div>
+              <div class="plus plus-js"
+                   style="visibility: hidden; opacity: 0"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% else %}
+  <div class="heading-basket-empty">
+    <div class="empty">Пусто</div>
+  </div>
+{% endif %}

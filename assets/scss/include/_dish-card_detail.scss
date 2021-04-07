@@ -1,0 +1,228 @@
+
+.dish-card_detail-parent {
+  overflow: hidden;
+  display: none;
+}
+.dish-card_detail {
+  position: fixed;
+  z-index: 1500;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  background: #FAFAF4;
+  height: 100vh;
+  overflow-y: auto;
+
+  .dish-card_detail-inner {
+    position: relative;
+    border: 1px solid #DB5B35;
+    margin: 20px 30px 60px 107px;
+
+    @media(max-width: 640px) {
+      margin: 4px 16px 74px;
+    }
+
+    .close-card-detail {
+      position: absolute;
+      top: 0;
+      right: 0;
+      background: #FAFAF4;
+      border-left: 1px solid #DB5B35;
+      border-bottom: 1px solid #DB5B35;
+      padding: 17px 20px 15px 19px;
+      cursor: pointer;
+      transition: .2s;
+
+      @media(max-width: 1200px) {
+        padding: 4px 4px 0;
+      }
+
+      @media(max-width: 640px) {
+        padding: 0;
+        width: 52px;
+        height: 52px;
+      }
+
+      @media(max-width: 425px) {
+        top: 12px;
+        border-top: 1px solid #DB5B35;
+      }
+
+      span {
+        display: inline-block;
+        width: 74px;
+        height: 74px;
+        background: url("../img/svg/close.svg") center no-repeat;
+        transition: .2s;
+
+        @media(max-width: 640px) {
+          background-size: contain;
+          width: 52px;
+          height: 52px;
+        }
+      }
+
+      &:hover {
+        background: #DB5B35;
+
+        span {
+          background: url("../img/svg/close2.svg") center no-repeat;
+        }
+      }
+    }
+
+    h2 {
+      font-weight: 600;
+      font-size: 60px;
+      line-height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #2A2928;
+      margin: 30px 0 17px -165px;
+      padding: 0 130px 0 0;
+      white-space: normal;
+
+      @media(max-width: 1200px) {
+        margin: 30px 0 28px -80px;
+      }
+
+      @media(max-width: 960px) {
+        margin: 30px 0 28px 8px;
+        justify-content: flex-start;
+      }
+
+      @media(max-width: 640px) {
+        margin: 98px 0 28px 8px;
+        font-size: 40px;
+        padding: 0;
+      }
+
+      span {
+        position: relative;
+        z-index: 10;
+        font-family: "Miama Nueva", sans-serif;
+        font-style: italic;
+        font-weight: 500;
+        font-size: 30px;
+        line-height: 167%;
+        display: flex;
+        align-items: center;
+        color: #BE3E18;
+        margin: -36px 0 0 -71px;
+
+        @media(max-width: 960px) {
+          margin: -50px 0 0 -220px;
+        }
+
+        @media(max-width: 640px) {
+          font-size: 20px;
+          margin: -50px 0 0 -145px;
+        }
+      }
+    }
+
+    .dish-card_detail-content {
+      display: flex;
+      align-items: flex-end;
+
+      @media (max-width: 960px) {
+        flex-direction: column;
+      }
+
+      .dish-card_detail-left {
+        margin: 0 0 0 -57px;
+        position: relative;
+        width: 55.8%;
+
+        @media (max-width: 1200px) {
+          width: 52%;
+        }
+
+        @media (max-width: 960px) {
+          width: calc(100% + 57px);
+          margin: 0 0 80px -57px;
+        }
+
+        @media (max-width: 640px) {
+          width: calc(100% + 33px);
+          margin: 0 -16px 80px -17px;
+        }
+
+        img {
+          position: relative;
+          z-index: 10;
+          padding: 0 47px 0 0;
+        }
+
+        &:after {
+          content: "";
+          position: absolute;
+          top: 21%;
+          bottom: -36px;
+          right: 0;
+          left: 41%;
+          background: url(../img/svg/main-banner-decor.svg) right no-repeat;
+          background-size: cover;
+        }
+      }
+
+      .dish-card_detail-right {
+        padding: 20px;
+        width: 33%;
+        margin: 0 auto;
+        align-self: center;
+
+        @media(max-width: 1200px) {
+          width: 49%;
+        }
+
+        @media(max-width: 960px) {
+          width: 100%;
+        }
+
+        @media(max-width: 425px) {
+          padding: 0 17px 0 19px;
+        }
+
+        .text {
+          font-family: "Poppins", sans-serif;
+          font-style: normal;
+          font-weight: 500;
+          font-size: 18px;
+          line-height: 178%;
+          color: #000000;
+          padding: 0 0 70px 0;
+          margin: 0 0 30px 0;
+          border-bottom: 1px solid #DB5B35;
+
+          @media(max-width: 640px) {
+            font-size: 16px;
+            padding: 0 0 40px 0;
+          }
+        }
+
+        .dish-card_description {
+          max-width: 322px;
+          padding: 0;
+
+          @media(max-width: 960px) {
+            margin: 0 auto 60px auto;
+          }
+
+          @media(max-width: 425px) {
+            .add-cart {
+              margin: 0 -2px 0 -4px;
+            }
+
+            .cost-dish-all {
+              margin: 0 -2px 15px -4px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+

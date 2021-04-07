@@ -1,0 +1,113 @@
+//create your reset styles
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+body {
+  font-family: 'Bogart', sans-serif;
+  font-weight: normal;
+  margin: 0;
+  padding: 0;
+  background: #FAFAF4;
+}
+
+.container {
+  max-width: 1170px;
+  padding: 0 16px;
+  margin: 0 auto;
+}
+
+main {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1920px;
+  margin: 0 auto;
+  background: #FAFAF4;
+
+  @media(max-width: 960px) {
+    display: block;
+    margin: 0 auto 54px auto;
+  }
+}
+
+a {
+  display: block;
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+  width: 100%;
+  display: block;
+}
+
+button, input, textarea {
+  outline: none;
+}
+
+.body-hidden {
+  overflow: hidden;
+
+  @media(max-width: 960px) {
+    padding: 0;
+  }
+}
+
+.paddingCon {
+  padding: 0 15px 0 0;
+
+  @media(max-width: 1024px) {
+    padding: 0;
+  }
+}
+
+.hide {
+  display: none;
+}
+
+.h2 {
+  font-family: "Bogart", sans-serif;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 40px;
+  line-height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #2A2928;
+
+  &:after {
+    content: "";
+    width: 37px;
+    height: 37px;
+    min-width: 37px;
+    background: url("../img/svg/decor4.svg") center no-repeat;
+    background-size: contain;
+  }
+}
+
+.background-hidden {
+  position: fixed;
+  z-index: 500;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.3);
+  visibility: hidden;
+  opacity: 0;
+  transition: .4s;
+
+  &.show {
+    visibility: visible;
+    opacity: 1;
+  }
+}

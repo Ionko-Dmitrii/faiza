@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}index{% endblock %}
+{% block mainClass %}home{% endblock %}
+
+{% block content %}
+  <section class="home-banner">
+    <img src="{{ main_banner.image.url }}" alt="load img"/>
+    <div class="main-heading">
+      <div class="title">
+        <div>
+          <h1>
+            Ваше любимое кафе
+            <span>Восточной кухни</span>
+          </h1>
+          <p>Более 20 лет следования традициям качества и безупречного вкуса</p>
+        </div>
+      </div>
+      <div class="title-img">
+        <img src="{% static 'img/svg/title-img.svg' %}" alt="load img"/>
+      </div>
+    </div>
+  </section>
+  <section class="popular-dishes">
+    <div class="popular-dishes_heading">
+      <h2> Популярные блюда</h2>
+      <p>Выбор наших постоянных посетителей</p>
+    </div>
+    <div class="popular-dishes_card">
+      {% for i in categories %}
+        {% for item in i.category_product.all %}
+          {% include 'component/product-card.html' %}
+        {% endfor %}
+      {% endfor %}
+    </div>
+    {% for i in categories %}
+      {% if forloop.first %}
+        <div class="link-all-product">
+          <a href="{{ i.get_absolute_url }}">ВСЕ Меню</a>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </section>
+  <section class="about-faiza">
+    <div class="about-faiza_content">
+      <div class="about-faiza_left">
+        <div class="about-faiza_description">
+          <h2> О Фаизе</h2>
+          <div class="text">{{ about_us_text.description_main }}</div>
+          <div class="about-faiza_link">
+            <a href="{% url 'about_us_url' %}">Подробнее</a>
+          </div>
+        </div>
+      </div>
+      <div class="about-faiza_right">
+        <img src="{% static 'img/jpg/faiza.jpg' %}" alt="load img"/>
+      </div>
+    </div>
+  </section>
+  <div class="dish-card_detail-parent">
+    {% include 'component/modal__dish-card-detail.html' %}
+  </div>
+{% endblock %}
+

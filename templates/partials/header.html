@@ -1,0 +1,153 @@
+{% load static %}
+
+<header class="header">
+  <div class="header-inner">
+    <div class="menu-content-all">
+      <div class="mobile-menu">
+        <div class="mobile-menu_inner">
+          <div class="mobile-home"></div>
+          <div class="mobile-contact"></div>
+          <div class="menu-hamburger">
+            <div class="menu-hamburger__icon">
+              <div class="icon-hamburger">
+                <span></span><span></span><span></span><span></span></div>
+            </div>
+          </div>
+          <div class="mobile-language">Ру</div>
+          <div class="mobile-cart-but">
+            <div class="icon"></div>
+          </div>
+        </div>
+      </div>
+      <div class="menu">
+        <div><a class="logo" href="{% url 'main-page' %}"><img
+          src="{% static 'img/svg/logo.svg' %}"
+          alt="load img"/></a>
+          <div class="menu-hamburger open-menu">
+            <div class="menu-hamburger__icon">
+              <div class="icon-hamburger">
+                <span></span><span></span><span></span><span></span></div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="decor">
+            <div class="decor-icon-top"></div>
+            <div class="decor-line"></div>
+            <div class="decor-icon-bottom"></div>
+          </div>
+          <div class="language-selection">
+            <div class="language-button">Ру</div>
+            <div class="language-content"><a>Ру</a><a>Кг</a><a>En</a></div>
+          </div>
+          <div class="cart-button">
+            <div class="icon">
+              <div class="count-item">0</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="menu-content-parent">
+        <div class="menu-content">
+          <div class="menu-content-inner">
+            <h2 class="h2">Меню</h2>
+            <ul>
+              {% for item in categories %}
+                <li><a
+                  class="{% if item.get_absolute_url == request.path %}active
+                  {% endif %}" href="{{ item.get_absolute_url }}">
+                  {{ item.name }}
+                </a></li>
+              {% endfor %}
+            </ul>
+            <h3>О нас</h3>
+            <div class="contact-block-all">
+              <div class="contact-block">
+                <h4>Фаиза на Медерова</h4><a href="tel:+996(555) 32 49 22">
+                +996(555) 32 49 22</a>
+                <p>ул.Медерова, 159</p>
+              </div>
+              <div class="contact-block">
+                <h4>Фаиза на Жибек Жолу</h4><a href="tel:+996(555) 32 49 21">
+                +996(555) 32 49 21</a>
+                <p>пр. Жибек Жолу, 555</p>
+              </div>
+              <div class="contact-block">
+                <h4>Доставка</h4>
+                <div class="contact-block-row">
+                  <p>Ковер-Самолет</p>
+                  <p>Namba Food</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="cart-content-parent">
+        <div class="cart-content">
+          <div class="cart-content_inner">
+            <div class="clear-cart"
+                 data-url="{% url 'clear_url' %}">Очистить
+            </div>
+            <div class="heading-basket">
+              <h2 class="h2">Ваш заказ</h2>
+              <div class="cart-product_all">
+                {% include 'component/product-cart.html' %}
+              </div>
+            </div>
+            <div>
+              <div class="cart-product_row">
+                <div class="name">Сумма заказа:</div>
+                <div class="sum">{{ sum_products }}</div>
+              </div>
+              <div class="cart-link"><a class="open-ordering">Оформить
+                доставку</a></div>
+              <div class="info">Доставка осуществляется сервисами</div>
+              <div class="info-delivery">
+                <span>Ковер-Самолет</span>
+                <span>Namba Food</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mobile-call-parent">
+        <div class="mobile-call">
+          <div class="mobile-call_inner">
+            <div class="close-mobile-call"></div>
+            <h2>Связаться для заказа</h2>
+            <div class="call-block_all">
+              <div class="call-block">
+                <h4>Фаиза на Медерова</h4><a href="tel:+996(555) 32 49 22">
+                +996(555) 32 49 22</a>
+              </div>
+              <div class="call-block">
+                <h4>Фаиза на Жибек Жолу</h4><a href="tel:+996(555) 32 49 21">
+                +996(555) 32 49 21</a>
+              </div>
+            </div>
+            <div class="phone-block">
+              <h3>Служба Ковер-Самолет</h3><a href="tel:+996(552) 93 16 31">
+              +996(552) 93 16 31</a><a
+              href="tel:+996(770) 93 16 31">+996(770) 93 16 31</a><a
+              href="tel:+996(700) 93 16 31">+996(700) 93 16
+              31</a>
+            </div>
+            <p>ВНИМАНИЕ! Цена за услуги может варьироваться в зависимости от
+              работы курьера, также существует доплата
+              за пределы города.</p>
+          </div>
+        </div>
+      </div>
+      <div class="mobile-language_content">
+        <div class="language-selection">
+          <div class="language-decor">
+            <div class="icon"></div>
+          </div>
+          <div class="language-content"><a
+            class="active">Ру</a><a>Кг</a><a>En</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>

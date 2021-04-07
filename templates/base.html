@@ -1,0 +1,47 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+  <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+  <link rel="stylesheet" href="{% static 'fonts/bogart/stylesheet.css' %}"/>
+  <link rel="stylesheet" href="{% static 'fonts/miama/stylesheet.css' %}"/>
+  <link rel="stylesheet" href="{% static 'fonts/SegoeUI/stylesheet.css' %}"/>
+  <link rel="stylesheet" href="{% static 'fonts/Poppins/stylesheet.css' %}"/>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}"/>
+  <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+
+<main class="{% block mainClass %}{% endblock %}">
+  <div class="logo-top-mobile">
+    <a href="#">
+      <img src="{% static 'img/svg/logo-top.svg' %}" alt="load img"/>
+    </a>
+  </div>
+  <div class="home-content">
+    {% block content %}{% endblock %}
+    {% include 'partials/footer.html' %}
+  </div>
+  {% include 'partials/header.html' %}
+</main>
+
+<div class="background-hidden"></div>
+{% include 'component/modal__ordering.html' %}
+{% include 'component/modal__finish.html' %}
+
+<script src="{% static 'js/libs.js' %}"></script>
+<script src="{% static 'js/mask-input.js' %}"></script>
+<script src="{% static 'js/owl-carousel2.js' %}"></script>
+<script src="{% static 'js/Height.js' %}"></script>
+<script src="{% static 'js/main.js' %}"></script>
+<script src="{% static 'back-js/back-js.js' %}"></script>
+<script src="https://unpkg.com/imask"></script>
+{% block js %}{% endblock %}
+</body>
+</html>
+
+

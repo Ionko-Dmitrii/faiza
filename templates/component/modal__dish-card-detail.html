@@ -1,0 +1,36 @@
+{% load static %}
+
+<div class="dish-card_detail">
+  <div class="dish-card_detail-inner">
+    <div class="close-card-detail"><span></span></div>
+    <h2>{{ product.title }}<span>{{ product.category }}</span></h2>
+    <div class="dish-card_detail-content">
+      <div class="dish-card_detail-left">
+        <img src="{{ product.image.url }}" alt="load img"/>
+      </div>
+      <div class="dish-card_detail-right">
+        <div class="text">{{ product.description }}</div>
+        <div class="dish-card_description">
+          <div class="cost-dish-all">
+            <div class="cost-dish portion-selection active">
+              <span>{{ product.portion }}/</span>
+              <span>{{ product.price }}c</span>
+            </div>
+            {% if  product.portion_two %}
+              <div class="cost-dish portion-selection">
+                <span>{{ product.portion_two }}/</span>
+                <span>{{ product.price_two }}c</span>
+              </div>
+            {% endif %}
+          </div>
+          {% if product %}
+            <div class="add-cart" data-url="{% url 'basket_url' product.id %}"
+                 data-product-id="{{ product.id }}">
+              добавить В заказ
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

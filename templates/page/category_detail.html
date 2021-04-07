@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+{% load static tags %}
+{% block title %}menu page{% endblock %}
+{% block mainClass %}menu-page{% endblock %}
+
+{% block content %}
+  <section class="menu-page_banner-section detail">
+    <div class="menu-page_banner">
+      <div class="menu-page_title">
+        <h1>Меню</h1>
+      </div>
+      <div class="banner-img">
+        <img src="{% static 'img/jpg/dish2.jpg' %}" alt="load img"/>
+      </div>
+    </div>
+    <div class="menu-scroll-block">
+      <div class="menu-page_tabs-parent">
+        <div class="menu-page_tabs">
+          {% for category in categories %}
+            <div class="link-menu
+          {% if category.get_absolute_url == request.path %}active{% endif %}"
+                 data-url="{{ category.ajax_absolute_url }}"
+                 data-link-url="{{ category.get_absolute_url }}"
+                 data-products-id="{{ category.pk }}">{{ category.name }}
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="popular-dishes">
+    <div class="popular-dishes__inner">
+      <h2>{{ select_category }}</h2>
+      <div class="popular-dishes_card">
+        {% for item in select_category.category_product.all %}
+          {% include 'component/product-card.html' %}
+        {% endfor %}
+      </div>
+    </div>
+    {% with categories|get_next_category:select_category as item %}
+      <div class="menu-page_link"><a
+        href="{{ item.get_absolute_url }}">{{ item.name }}</a></div>
+    {% endwith %}
+  </section>
+  <div class="dish-card_detail-parent">
+    {% include 'component/modal__dish-card-detail.html' %}
+  </div>
+{% endblock %}
+
+{% block js %}
+  <script>
+    $(document).ready(function () {
+
+      var scrollBlock = $(".menu-page_tabs-parent");
+      var startScroll = $(".popular-dishes").offset()
+        .top - scrollBlock[0].scrollHeight - 95;
+      var startScroll2 = $(".popular-dishes").offset()
+        .top - scrollBlock[0].scrollHeight - 45;
+      var endScroll = $(".footer").offset()
+        .top - scrollBlock[0].scrollHeight - 20;
+      var topScroll = $(".footer").offset().top - 20;
+      var topScroll2 = $(".footer").offset()
+        .top - scrollBlock[0].scrollHeight - 20;
+
+      $(".menu-scroll-block").css("height", scrollBlock[0].scrollHeight);
+
+      $(document).on("scroll", window, function () {
+
+        if ($(window).width() >= 960) {
+
+          if ($(window).scrollTop() > startScroll) {
+            scrollBlock.css({
+              position: 'fixed',
+              top: 93,
+            });
+          }
+
+          if ($(window).scrollTop() < startScroll) {
+            scrollBlock.css({
+              position: 'relative',
+              top: 0,
+            });
+          }
+
+          if ($(window).scrollTop() > endScroll) {
+            scrollBlock.css({
+              position: 'absolute',
+              top: topScroll,
+            });
+          }
+
+        } else {
+          if ($(window).scrollTop() > startScroll2) {
+            scrollBlock.css({
+              position: 'fixed',
+              top: 0,
+            });
+          }
+
+          if ($(window).scrollTop() < startScroll2) {
+            scrollBlock.css({
+              position: 'relative',
+              top: 0,
+            });
+          }
+
+          if ($(window).scrollTop() > endScroll) {
+            scrollBlock.css({
+              position: 'absolute',
+              top: topScroll2,
+            });
+          }
+        }
+      })
+    })
+  </script>
+{% endblock %}
