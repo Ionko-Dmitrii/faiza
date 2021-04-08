@@ -112,7 +112,6 @@ class BasketActionView(View):
 
         product_id = int(request.POST.get('productId'))
         product_id_list = [i['product_id'] for i in cookie_list]
-
         product_dict = dict(
             product_id=product_id,
             count=count
@@ -127,41 +126,18 @@ class BasketActionView(View):
             cookie_list.append(product_dict)
 
         product_count_list = [i['count'] for i in cookie_list]
-
         products = Product.objects.filter(id__in=product_id_list)
+
+        products_dict = dict((product.id, product) for product in products)
+        product_id_list.reverse()
+
+        ordered_products = [
+            products_dict.get(product_item_id)
+            for product_item_id in product_id_list
+        ]
+
         context = dict(
-            header_item=get_header_item_templates(products),
-            sum_products=get_sum_products(products, product_count_list),
-        )
-        response = JsonResponse(context)
-        set_cookie(response, settings.BASKET_COOKIE_NAME,
-                   json.dumps(cookie_list))
-
-        return response
-
-
-class BasketRemoveItem(View):
-
-    def post(self, request, *args, **kwargs):
-        cookie_list = list()
-        count = 1
-        if settings.BASKET_COOKIE_NAME in request.COOKIES:
-            products_list = request.COOKIES[settings.BASKET_COOKIE_NAME]
-            cookie_list = json.loads(products_list)
-
-        product_id = int(request.POST.get('product_id'))
-        product_id_list = [i['product_id'] for i in cookie_list]
-
-        if product_id in product_id_list:
-            index_item = product_id_list.index(product_id)
-            del cookie_list[index_item]
-            product_id_list.remove(product_id)
-
-        product_count_list = [i['count'] for i in cookie_list]
-
-        products = Product.objects.filter(id__in=product_id_list)
-        context = dict(
-            header_item=get_header_item_templates(products),
+            header_item=get_header_item_templates(ordered_products),
             sum_products=get_sum_products(products, product_count_list),
         )
         response = JsonResponse(context)

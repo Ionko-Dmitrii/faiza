@@ -23,9 +23,18 @@ def get_products_from_cookie(request):
     product_count_list = [i['count'] for i in cookie_list]
 
     products = Product.objects.filter(id__in=product_id_list)
+
+    products_dict = dict((product.id, product) for product in products)
+    product_id_list.reverse()
+
+    ordered_products = [
+        products_dict.get(product_item_id)
+        for product_item_id in product_id_list
+    ]
+
     products_sum = get_sum_products(products, product_count_list)
 
     return {
-        'product_list': products,
+        'product_list': ordered_products,
         'sum_products': products_sum,
     }

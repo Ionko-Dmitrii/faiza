@@ -14,6 +14,78 @@ function getCookieD(name) {
   return null;
 }
 
+function getCookieProduct() {
+  basketCookie = getCookieD('BASKET_FAIZA');
+  if (basketCookie) {
+    if (basketCookie.length > 4) {
+      basketCookie = basketCookie.replace(/\\054/g, '')
+        .replace('"[', '')
+        .replace(']"', '')
+        .replace(/\\/g, '')
+        .replace(/} {/g, '}, {')
+        .replace(/:\s/g, ':')
+        .replace(/\s"/g, ',"').split(', ')
+
+      productIdArr = []
+      productCountArr = []
+
+      basketCookie.forEach(function (item) {
+        var t = item.replace(/,/g, ', ')
+        var b = JSON.parse(t)
+        productIdArr.push(b['product_id'])
+        productCountArr.push(b['count'])
+      })
+    }
+  }
+}
+
+function setCountProduct() {
+  getCookieProduct();
+  var productCount = $('.cart-product_all .cart-product__ajax');
+  var productContainer = $('.cart-product-container input');
+  var containerSum = 0;
+
+  if (basketCookie) {
+    var reverseArr = productCountArr.reverse()
+    productCount.each(function (i, item) {
+      $(item).find('.cost-dish-all').find('input').val(reverseArr[i]);
+      containerSum += Number(reverseArr[i]);
+      productContainer.val(containerSum)
+    });
+  }
+}
+
+function setActiveForProduct() {
+  setCountProduct();
+  productItem = $('.popular-dishes_card .dish-card');
+
+  getCookieProduct();
+  productItem.each(function (i, item) {
+    var itemId = $(item).find('.add-cart').attr('data-product-id')
+    if (basketCookie) {
+      productIdArr.forEach(function (obj) {
+        if (Number(obj) === Number(itemId)) {
+          $(item).find('.add-cart').addClass('active');
+          $(item).find('.add-cart').text('ДОБАВЛЕНО');
+        }
+      })
+    }
+  });
+}
+
+setActiveForProduct();
+
+function getCountBasketProduct() {
+  var itemBasket = $('.cart-product_all .cart-product').length;
+  if (itemBasket < 1) {
+    countBasket.text("0")
+  } else {
+    countBasket.text(itemBasket - 1)
+  }
+}
+
+getCountBasketProduct();
+
 $(document).on("click", '.open-card-detail', function (e) {
   e.stopPropagation();
   e.preventDefault();
@@ -132,6 +204,7 @@ $(document).on("click", '.add-cart', function () {
         thisItem.addClass("active");
       }
       getCountBasketProduct();
+      setCountProduct()
     },
     error: function (xhr, status) {
       alert("Sorry, there was a problem!");
@@ -147,7 +220,8 @@ $(document).on("click", '.button-count-ajax', function () {
     .children('.remove-card').data('product-id');
   var sumProducts = $('.cart-product_row .sum');
 
-  setTimeout(function () {
+  if (timeout) clearTimeout(timeout);
+  var timeout = setTimeout(function () {
     var countProduct = thisItem.siblings('.input').children('input').val();
 
     $.ajax({
@@ -160,6 +234,7 @@ $(document).on("click", '.button-count-ajax', function () {
       },
       success: function (data) {
         sumProducts.text(data.sum_products)
+        setCountProduct();
       },
       error: function (xhr, status) {
         alert("Sorry, there was a problem!");
@@ -168,73 +243,6 @@ $(document).on("click", '.button-count-ajax', function () {
   }, 200)
 
 })
-
-function getCountBasketProduct() {
-  var itemBasket = $('.cart-product_all .cart-product').length;
-  if (itemBasket < 1) {
-    countBasket.text("0")
-  } else {
-    countBasket.text(itemBasket - 1)
-  }
-}
-
-getCountBasketProduct();
-
-function getCookieProduct() {
-  basketCookie = getCookieD('BASKET_FAIZA');
-  if (basketCookie) {
-    if (basketCookie.length > 4) {
-      basketCookie = basketCookie.replace(/\\054/g, '')
-        .replace('"[', '')
-        .replace(']"', '')
-        .replace(/\\/g, '')
-        .replace(/} {/g, '}, {')
-        .replace(/:\s/g, ':')
-        .replace(/\s"/g, ',"').split(', ')
-
-      productIdArr = []
-      productCountArr = []
-
-      basketCookie.forEach(function (item) {
-        var t = item.replace(/,/g, ', ')
-        var b = JSON.parse(t)
-        productIdArr.push(b['product_id'])
-        productCountArr.push(b['count'])
-      })
-    }
-  }
-}
-
-function setActiveForProduct() {
-  productItem = $('.popular-dishes_card .dish-card');
-  var productCount = $('.cart-product_all .cart-product__ajax');
-  var productContainer = $('.cart-product-container input');
-
-  getCookieProduct();
-  productItem.each(function (i, item) {
-    var itemId = $(item).find('.add-cart').attr('data-product-id')
-    if (basketCookie) {
-      productIdArr.forEach(function (obj) {
-        if (Number(obj) === Number(itemId)) {
-          $(item).find('.add-cart').addClass('active');
-          $(item).find('.add-cart').text('ДОБАВЛЕНО');
-        }
-      })
-    }
-  });
-
-  var containerSum = 0;
-
-  productCount.each(function (i, item) {
-    if (basketCookie) {
-      $(item).find('.cost-dish-all').find('input').val(productCountArr[i]);
-      containerSum += Number(productCountArr[i]);
-      productContainer.val(containerSum)
-    }
-  });
-}
-
-setActiveForProduct();
 
 $(document).on("click", '.remove-card', function () {
   var sum = $('.cart-product_row .sum');
@@ -247,13 +255,14 @@ $(document).on("click", '.remove-card', function () {
     method: 'POST',
     data: {
       csrfmiddlewaretoken: getCookie('csrftoken'),
-      'product_id': product_id,
+      'productId': product_id,
     },
     success: function (data) {
       sum.text(data.sum_products);
       wrapperProducts.html(data.header_item);
       getCountBasketProduct();
       getCookieProduct();
+      setCountProduct();
       productItem.each(function (i, obj) {
         if ($(obj).find('.add-cart').attr('data-product-id') === String(product_id)) {
           $(obj).find('.add-cart').removeClass('active');
@@ -268,9 +277,7 @@ $(document).on("click", '.remove-card', function () {
 });
 
 
-var buttonCardPreview = '.dish-card_detail .add-cart'
-
-$(document).on("click", buttonCardPreview, function () {
+$(document).on("click", '.dish-card_detail .add-cart', function () {
   productItem = $('.popular-dishes_card .dish-card');
   thisId = $(this).attr('data-product-id');
   thisItem = $(this);
@@ -304,6 +311,7 @@ $(document).on("click", '.clear-cart', function () {
       wrapperProducts.html(data.clear_basket);
       getCountBasketProduct();
       getCookieProduct();
+      setCountProduct();
       productItem.each(function (i, obj) {
         $(obj).find('.add-cart').removeClass('active');
         $(obj).find('.add-cart').text('добавить В заказ');
