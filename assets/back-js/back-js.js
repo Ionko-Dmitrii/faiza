@@ -2,6 +2,7 @@ var countBasket = $('.cart-button .count-item');
 var basketCookie = getCookieD('BASKET_FAIZA');
 var productIdArr = [];
 var productCountArr = [];
+var productCountTwoArr = [];
 
 function getCookieD(name) {
   var cookieArr = document.cookie.split(";");
@@ -26,51 +27,51 @@ function getCookieProduct() {
         .replace(/:\s/g, ':')
         .replace(/\s"/g, ',"').split(', ')
 
-      productIdArr = []
-      productCountArr = []
+      productIdArr = [];
+      productCountArr = [];
+      productCountTwoArr = [];
 
       basketCookie.forEach(function (item) {
         var t = item.replace(/,/g, ', ')
         var b = JSON.parse(t)
         productIdArr.push(b['product_id'])
         productCountArr.push(b['count'])
+        productCountTwoArr.push(b['count_two'])
       })
     }
   }
 }
 
-function setCountProduct() {
-  getCookieProduct();
-  var productCount = $('.cart-product_all .cart-product__ajax');
-  var productContainer = $('.cart-product-container input');
-  var containerSum = 0;
-
-  if (basketCookie) {
-    var reverseArr = productCountArr.reverse()
-    productCount.each(function (i, item) {
-      $(item).find('.cost-dish-all').find('input').val(reverseArr[i]);
-      containerSum += Number(reverseArr[i]);
-      productContainer.val(containerSum)
-    });
-  }
-}
-
 function setActiveForProduct() {
-  setCountProduct();
   productItem = $('.popular-dishes_card .dish-card');
 
   getCookieProduct();
+  var selectorDict = {};
+  var selectorList = []
   productItem.each(function (i, item) {
     var itemId = $(item).find('.add-cart').attr('data-product-id')
     if (basketCookie) {
       productIdArr.forEach(function (obj) {
         if (Number(obj) === Number(itemId)) {
-          $(item).find('.add-cart').addClass('active');
-          $(item).find('.add-cart').text('ДОБАВЛЕНО');
+          selectorDict[itemId] = $(item)
         }
       })
     }
   });
+
+  productIdArr.forEach(function(id){
+    selectorList.push(selectorDict[id])
+  })
+  productCountArr.forEach(function (count, index) {
+    if (count > 0) {
+      selectorList[index].find('.add-cart-one').addClass("active").text('ДОБАВЛЕНО')
+    }
+  })
+  productCountTwoArr.forEach(function (count, index) {
+    if (count > 0) {
+      selectorList[index].find('.add-cart-two').addClass("active").text('ДОБАВЛЕНО')
+    }
+  })
 }
 
 setActiveForProduct();
@@ -175,49 +176,91 @@ $('.menu-page_tabs .link-menu').click(function () {
   })
 })
 
-$(document).on("click", '.add-cart', function () {
-  var url = $(this).data('url');
-  var wrapperProducts = $('.cart-product_all');
-  var productId = $(this).data('product-id');
-  var thisItem = $(this);
-  var sum = $('.cart-product_row .sum');
-  thisItem.css('transform', 'scale(.9)');
-  setTimeout(function () {
-    thisItem.css('transform', 'scale(1)')
-  }, 200)
-  wrapperProducts.html('');
-  $.ajax({
-    url: url,
-    method: 'POST',
-    data: {
-      csrfmiddlewaretoken: getCookie('csrftoken'),
-      'productId': productId,
-    },
-    success: function (data) {
-      sum.text(data.sum_products);
-      wrapperProducts.html(data.header_item);
-      if (thisItem.hasClass("active")) {
-        thisItem.text('добавить В заказ');
-        thisItem.removeClass("active");
-      } else {
-        thisItem.text('ДОБАВЛЕНО');
-        thisItem.addClass("active");
-      }
-      getCountBasketProduct();
-      setCountProduct()
-    },
-    error: function (xhr, status) {
-      alert("Sorry, there was a problem!");
-    },
-  });
+$(document).on("click",
+  '.add_cart_but_wrapper .add-cart-one',
+  function () {
+    var url = $(this).data('url');
+    var wrapperProducts = $('.cart-product_all');
+    var productId = $(this).data('product-id');
+    var thisItem = $(this);
+    var sum = $('.cart-product_row .sum');
+    thisItem.css('transform', 'scale(.9)');
+    setTimeout(function () {
+      thisItem.css('transform', 'scale(1)')
+    }, 300)
+    wrapperProducts.html('');
+    $.ajax({
+      url: url,
+      method: 'POST',
+      data: {
+        csrfmiddlewaretoken: getCookie('csrftoken'),
+        'productId': productId,
+      },
+      success: function (data) {
+        sum.text(data.sum_products);
+        wrapperProducts.html(data.header_item);
+        if (thisItem.hasClass("active")) {
+          thisItem.text('добавить В заказ');
+          thisItem.removeClass("active");
+        } else {
+          thisItem.text('ДОБАВЛЕНО');
+          thisItem.addClass("active");
+        }
+        getCountBasketProduct();
+      },
+      error: function (xhr, status) {
+        alert("Sorry, there was a problem!");
+      },
+    });
 
-})
+  })
 
-$(document).on("click", '.button-count-ajax', function () {
+$(document).on("click",
+  '.add_cart_but_wrapper .add-cart-two',
+  function () {
+    var url = $(this).data('url');
+    var wrapperProducts = $('.cart-product_all');
+    var productId = $(this).data('product-id');
+    var thisItem = $(this);
+    var sum = $('.cart-product_row .sum');
+    thisItem.css('transform', 'scale(.9)');
+    setTimeout(function () {
+      thisItem.css('transform', 'scale(1)')
+    }, 300)
+    wrapperProducts.html('');
+    $.ajax({
+      url: url,
+      method: 'POST',
+      data: {
+        csrfmiddlewaretoken: getCookie('csrftoken'),
+        'productId': productId,
+      },
+      success: function (data) {
+        sum.text(data.sum_products);
+        wrapperProducts.html(data.header_item);
+        if (thisItem.hasClass("active")) {
+          thisItem.text('добавить В заказ');
+          thisItem.removeClass("active");
+        } else {
+          thisItem.text('ДОБАВЛЕНО');
+          thisItem.addClass("active");
+        }
+        getCountBasketProduct();
+        console.log("success")
+      },
+      error: function (xhr, status) {
+        alert("Sorry, there was a problem!");
+      },
+    });
+
+  })
+
+$(document).on("click", '.portion_big .button-count-ajax', function () {
   var thisItem = $(this)
   var url = $(this).data('url');
   var productId = $(this).closest('.dish-card_description')
     .children('.remove-card').data('product-id');
+  var countProductVal = $('.count_product');
   var sumProducts = $('.cart-product_row .sum');
 
   if (timeout) clearTimeout(timeout);
@@ -234,7 +277,7 @@ $(document).on("click", '.button-count-ajax', function () {
       },
       success: function (data) {
         sumProducts.text(data.sum_products)
-        setCountProduct();
+        countProductVal.val(data.count_product);
       },
       error: function (xhr, status) {
         alert("Sorry, there was a problem!");
@@ -244,37 +287,68 @@ $(document).on("click", '.button-count-ajax', function () {
 
 })
 
-$(document).on("click", '.remove-card', function () {
-  var sum = $('.cart-product_row .sum');
+$(document).on("click", '.portion_small .button-count-ajax', function () {
+  var thisItem = $(this)
   var url = $(this).data('url');
-  var product_id = $(this).data('product-id');
-  var wrapperProducts = $('.cart-product_all');
-  productItem = $('.popular-dishes_card .dish-card');
-  $.ajax({
-    url: url,
-    method: 'POST',
-    data: {
-      csrfmiddlewaretoken: getCookie('csrftoken'),
-      'productId': product_id,
-    },
-    success: function (data) {
-      sum.text(data.sum_products);
-      wrapperProducts.html(data.header_item);
-      getCountBasketProduct();
-      getCookieProduct();
-      setCountProduct();
-      productItem.each(function (i, obj) {
-        if ($(obj).find('.add-cart').attr('data-product-id') === String(product_id)) {
-          $(obj).find('.add-cart').removeClass('active');
-          $(obj).find('.add-cart').text('добавить В заказ');
-        }
-      })
-    },
-    error: function (xhr, status) {
-      alert("Sorry, there was a problem!");
-    },
-  })
-});
+  var productId = $(this).closest('.dish-card_description')
+    .children('.remove-card').data('product-id');
+  var countProductVal = $('.count_product');
+  var sumProducts = $('.cart-product_row .sum');
+
+  if (timeout) clearTimeout(timeout);
+  var timeout = setTimeout(function () {
+    var countProduct = thisItem.siblings('.input').children('input').val();
+
+    $.ajax({
+      url: url,
+      method: 'POST',
+      data: {
+        csrfmiddlewaretoken: getCookie('csrftoken'),
+        'productId': productId,
+        'count_two': countProduct,
+      },
+      success: function (data) {
+        sumProducts.text(data.sum_products)
+        countProductVal.val(data.count_product);
+      },
+      error: function (xhr, status) {
+        alert("Sorry, there was a problem!");
+      },
+    });
+  }, 200)
+
+})
+
+// $(document).on("click", '.remove-card', function () {
+//   var sum = $('.cart-product_row .sum');
+//   var url = $(this).data('url');
+//   var product_id = $(this).data('product-id');
+//   var wrapperProducts = $('.cart-product_all');
+//   productItem = $('.popular-dishes_card .dish-card');
+//   $.ajax({
+//     url: url,
+//     method: 'POST',
+//     data: {
+//       csrfmiddlewaretoken: getCookie('csrftoken'),
+//       'productId': product_id,
+//     },
+//     success: function (data) {
+//       sum.text(data.sum_products);
+//       wrapperProducts.html(data.header_item);
+//       getCountBasketProduct();
+//       getCookieProduct();
+//       productItem.each(function (i, obj) {
+//         if ($(obj).find('.add-cart').attr('data-product-id') === String(product_id)) {
+//           $(obj).find('.add-cart').removeClass('active');
+//           $(obj).find('.add-cart').text('добавить В заказ');
+//         }
+//       })
+//     },
+//     error: function (xhr, status) {
+//       alert("Sorry, there was a problem!");
+//     },
+//   })
+// });
 
 
 $(document).on("click", '.dish-card_detail .add-cart', function () {
@@ -300,6 +374,7 @@ $(document).on("click", '.dish-card_detail .add-cart', function () {
 $(document).on("click", '.clear-cart', function () {
   var url = $(this).data('url');
   var wrapperProducts = $('.cart-product_all');
+  var sumProducts = $('.cart-product_row .sum');
 
   $.ajax({
     url: url,
@@ -309,9 +384,10 @@ $(document).on("click", '.clear-cart', function () {
     },
     success: function (data) {
       wrapperProducts.html(data.clear_basket);
+      sumProducts.text(data.sum_products);
       getCountBasketProduct();
       getCookieProduct();
-      setCountProduct();
+      // setCountProduct();
       productItem.each(function (i, obj) {
         $(obj).find('.add-cart').removeClass('active');
         $(obj).find('.add-cart').text('добавить В заказ');

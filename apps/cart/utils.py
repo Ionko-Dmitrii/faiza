@@ -1,6 +1,10 @@
 import datetime
+import json
 
 from django.template import loader
+
+from apps.main.models import Product
+from core import settings
 
 
 # class Cart:
@@ -23,19 +27,115 @@ def set_cookie(response, key, value, days_expire=60):
     return response
 
 
-def get_header_item_templates(basket_product_list):
+def get_header_item_templates(basket_product_list, count_container):
     template = loader.get_template('component/product-cart.html')
-    context = dict(product_list=basket_product_list)
+    context = dict(
+        product_list=basket_product_list,
+        count_container=count_container,
+    )
     return template.render(context)
 
 
-def get_sum_products(products, count_product):
-    products_prices = products.values_list('price', flat=True)
+def get_sum_products(
+        products, count_products, count_without_container, product_id_list,
+        count_products_small):
+    products_dict = dict((product.id, product.price) for product in products)
+    products_dict_small = dict((product.id, product.price_two) for product in products)
 
-    sum_count = list()
-    for i, j in zip(map(int, products_prices), count_product):
-        sum_count.append(i * j)
+    product_id_list.reverse()
 
-    products_sum = sum(sum_count) + (sum(count_product) * 8)
+    ordered_products = [
+        products_dict.get(product_item_id)
+        for product_item_id in product_id_list
+    ]
 
+    ordered_products_small = [
+        products_dict_small.get(product_item_id)
+        for product_item_id in product_id_list
+    ]
+
+    for i in ordered_products_small:
+        if i is None:
+            indexPriceSmall = ordered_products_small.index(i)
+            ordered_products_small[indexPriceSmall] = 0
+
+    ordered_products.reverse()
+    ordered_products_small.reverse()
+
+    sum_count = [i * j for i, j in
+                 zip(map(int, ordered_products), count_products)]
+
+    sum_count_small = [i * j for i, j in
+                 zip(map(int, ordered_products_small), count_products_small)]
+
+    products_sum = sum(sum_count) + sum(sum_count_small) + (sum(count_without_container) * 8)
     return products_sum
+
+
+def get_cookie_list_from_cookie(request):
+    cookie_list = list()
+
+    if settings.BASKET_COOKIE_NAME in request.COOKIES:
+        products_list = request.COOKIES[settings.BASKET_COOKIE_NAME]
+        cookie_list = json.loads(products_list)
+
+    return cookie_list
+
+
+def get_product_list(product_id_list, cookie_list, count=1):
+    product_count_list = [i['count'] for i in cookie_list]
+    cookie_count_for_container = [i['count'] for i in cookie_list]
+    product_count_two_list = [i['count_two'] for i in cookie_list]
+    cookie_count_two_for_container = [i['count_two'] for i in cookie_list]
+    products_without_container = Product.objects.filter(
+        id__in=product_id_list, category__is_container=True
+    ).values_list('id', flat=True)
+
+    for i in map(int, products_without_container):
+        if i in product_id_list:
+            index_item = product_id_list.index(i)
+            cookie_count_for_container[index_item] = 0
+            cookie_count_two_for_container[index_item] = 0
+    cookie_count_for_container.reverse()
+    cookie_count_two_for_container.reverse()
+
+    cookie_count_for_container_all = [
+        (count + count_two)
+        for count, count_two in zip(
+            cookie_count_for_container, cookie_count_two_for_container)
+    ]
+
+    products = Product.objects.filter(id__in=product_id_list)
+    products_dict = dict((product.id, product) for product in products)
+    product_count_list.reverse()
+    product_id_list.reverse()
+    product_count_two_list.reverse()
+
+    ordered_products = [
+        products_dict.get(product_item_id)
+        for product_item_id in product_id_list
+    ]
+
+    basket_prod_list = [
+        (count_two, count, prod)
+        for count_two, count, prod in zip(
+            product_count_two_list, product_count_list, ordered_products)
+    ]
+
+    count_container_list = list()
+    count_container_list.reverse()
+    for count, count_two in zip(
+            cookie_count_for_container, product_count_two_list):
+        count_container_list.append(count+count_two)
+    count_container = sum(count_container_list)
+
+    context = {
+        "products": products,
+        "basket_prod_list": basket_prod_list,
+        "count_container": count_container,
+        "product_count_list": product_count_list,
+        "count_without_container": cookie_count_for_container_all,
+        "count_products_small": product_count_two_list,
+    }
+
+    return context

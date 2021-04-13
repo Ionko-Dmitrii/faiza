@@ -25,8 +25,14 @@
         </div>
       {% endif %}
     </div>
-    <div class="add-cart" data-url="{% url 'basket_url' item.id %}"
-         data-product-id="{{ item.id }}">добавить В заказ
+    <div class="add_cart_but_wrapper">
+      <div class="add-cart add-cart-one" data-url="{% url 'basket_url' item.id %}"
+           data-product-id="{{ item.id }}">добавить В заказ
+      </div>
+      {% if item.portion_two %}
+        <div class="add-cart add-cart-two hide" data-url="{% url 'basket_two_url' item.id %}"
+           data-product-id="{{ item.id }}">добавить В заказ</div>
+      {% endif %}
     </div>
   </div>
 </div>

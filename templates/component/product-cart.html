@@ -1,7 +1,7 @@
 {% load static %}
 
 {% if product_list %}
-  {% for product in product_list %}
+  {% for count_two, count, product in product_list %}
     <div class="cart-product cart-product__ajax">
       <div class="cart-product_img">
         <img src="{{ product.image.url }}" alt="load img"/>
@@ -10,32 +10,42 @@
         <h3>{{ product.title }}</h3>
         <div class="dish-card_description">
           <div class="cost-dish-all">
-            <div class="cost-dish_number">
-              <div class="cost-dish cart-portion-selection active">
+            <div class="cost-dish_number portion_big">
+              <div class="cost-dish cart-portion-selection
+                    {% if count %}active{% endif %}"
+                   data-url="{% url 'basket_url' product.id %}"
+                   data-product-id="{{ product.id }}">
                 <span>{{ product.portion }}/</span>
                 <span>{{ product.price }}c</span>
               </div>
-              <div class="number-block show">
+              <div class=" number-block {% if count %}show{% endif %}
+              ">
                 <div class="minus minus-js button-count-ajax"
                      data-url="{% url 'update_quantity' product.id %}"></div>
                 <div class="input">
-                  <input type="text" value="1" min="1" max="9"/>
+                  <input type="text" readonly value="{{ count }}" min="1"
+                         max="9"/>
                 </div>
                 <div class="plus plus-js button-count-ajax"
                      data-url="{% url 'update_quantity' product.id %}"></div>
               </div>
             </div>
             {% if product.portion_two %}
-              <div class="cost-dish_number">
-                <div class="cost-dish cart-portion-selection">
-                  <span>{{ product.portion }}/</span>
-                  <span>{{ product.price }}c</span>
+              <div class="cost-dish_number portion_small">
+                <div
+                  class="cost-dish cart-portion-selection
+                    {% if count_two %}active{% endif %}"
+                  data-url="{% url 'basket_two_url' product.id %}"
+                  data-product-id="{{ product.id }}">
+                  <span>{{ product.portion_two }}/</span>
+                  <span>{{ product.price_two }}c</span>
                 </div>
-                <div class="number-block">
+                <div class="number-block {% if count_two %}show{% endif %}">
                   <div class="minus minus-js button-count-ajax"
                        data-url="{% url 'update_quantity' product.id %}"></div>
                   <div class="input">
-                    <input type="text" value="1" min="1" max="9"/>
+                    <input type="text" readonly value="{{ count_two }}" min="1"
+                           max="9"/>
                   </div>
                   <div class="plus plus-js button-count-ajax"
                        data-url="{% url 'update_quantity' product.id %}"></div>
@@ -66,7 +76,8 @@
               <div class="minus minus-js"
                    style="visibility: hidden; opacity: 0"></div>
               <div class="input">
-                <input type="text" readonly value="1" min="1" max="9"/>
+                <input type="text" class="count_product" readonly
+                       value="{{ count_container }}" min="1"/>
               </div>
               <div class="plus plus-js"
                    style="visibility: hidden; opacity: 0"></div>

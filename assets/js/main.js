@@ -210,8 +210,16 @@ $(document).ready(function () {
 
 
   $(document).on("click", costDish, function () {
+    var indexItem = $(this).index()
     $(this).siblings(".cost-dish").removeClass("active");
     $(this).addClass("active");
+    if ($(this).parent('.cost-dish-all').siblings('.add_cart_but_wrapper')
+      .children('.add-cart').length > 1) {
+      $(this).parent('.cost-dish-all').siblings('.add_cart_but_wrapper')
+        .children('.add-cart').addClass('hide')
+      $(this).parent('.cost-dish-all').siblings('.add_cart_but_wrapper')
+        .children(`.add-cart:eq(${indexItem})`).removeClass('hide')
+    }
   });
 
   var cartCostDish = ".cart-portion-selection";

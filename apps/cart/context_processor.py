@@ -1,11 +1,7 @@
-import json
-
-from django.conf import settings
-
 # from apps.cart.utils import Cart
-from apps.cart.utils import get_sum_products
-from apps.main.models import Product
-
+from apps.cart.utils import (
+    get_sum_products, get_cookie_list_from_cookie, get_product_list
+)
 
 # def cart(request):
 #     return {
@@ -14,27 +10,20 @@ from apps.main.models import Product
 
 
 def get_products_from_cookie(request):
-    cookie_list = list()
-    if settings.BASKET_COOKIE_NAME in request.COOKIES:
-        products_list = request.COOKIES[settings.BASKET_COOKIE_NAME]
-        cookie_list = json.loads(products_list)
-
+    cookie_list = get_cookie_list_from_cookie(request)
     product_id_list = [i['product_id'] for i in cookie_list]
-    product_count_list = [i['count'] for i in cookie_list]
+    context_products = get_product_list(product_id_list, cookie_list)
 
-    products = Product.objects.filter(id__in=product_id_list)
-
-    products_dict = dict((product.id, product) for product in products)
-    product_id_list.reverse()
-
-    ordered_products = [
-        products_dict.get(product_item_id)
-        for product_item_id in product_id_list
-    ]
-
-    products_sum = get_sum_products(products, product_count_list)
+    products_sum = get_sum_products(
+        context_products["products"],
+        context_products["product_count_list"],
+        context_products["count_without_container"],
+        product_id_list,
+        context_products["count_products_small"],
+    )
 
     return {
-        'product_list': ordered_products,
+        'product_list': context_products["basket_prod_list"],
         'sum_products': products_sum,
+        'count_container': context_products["count_container"],
     }

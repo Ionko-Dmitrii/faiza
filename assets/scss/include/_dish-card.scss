@@ -188,5 +188,9 @@
       height: 20px;
       background: url("../img/svg/cart.svg") center no-repeat;
     }
+
+    &.hide {
+      display: none;
+    }
   }
 }

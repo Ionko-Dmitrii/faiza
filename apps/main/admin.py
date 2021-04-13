@@ -17,7 +17,7 @@ class MainBannerAdmin(admin.ModelAdmin):
 
 @admin.register(Category)
 class CategoryInline(admin.ModelAdmin):
-    list_display = ('name',)
+    list_display = ('name', 'is_container')
 
     def has_add_permission(self, request):
         return self.model.objects.count() < 6

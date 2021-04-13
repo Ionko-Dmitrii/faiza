@@ -22,6 +22,9 @@ class MainBanner(models.Model):
 
 class Category(models.Model):
     name = models.CharField(verbose_name='Название категории', max_length=255)
+    is_container = models.BooleanField(
+        default=False, verbose_name='Не должно быть контейнера?'
+    )
 
     def __str__(self):
         return str(self.name)
