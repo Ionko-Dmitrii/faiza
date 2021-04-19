@@ -208,7 +208,6 @@ $(document).ready(function () {
     $(obj).children(".portion-selection:eq(0)").addClass("active");
   });
 
-
   $(document).on("click", costDish, function () {
     var indexItem = $(this).index()
     $(this).siblings(".cost-dish").removeClass("active");
@@ -219,19 +218,6 @@ $(document).ready(function () {
         .children('.add-cart').addClass('hide')
       $(this).parent('.cost-dish-all').siblings('.add_cart_but_wrapper')
         .children(`.add-cart:eq(${indexItem})`).removeClass('hide')
-    }
-  });
-
-  var cartCostDish = ".cart-portion-selection";
-
-  $(document).on("click", cartCostDish, function () {
-    if ($(this).parent('.cost-dish_number').siblings('.cost-dish_number')
-      .children('.cart-portion-selection').hasClass("active")) {
-      $(this).toggleClass("active");
-      $(this).siblings(".number-block").toggleClass("show")
-    } else {
-      $(this).addClass("active");
-      $(this).siblings(".number-block").addClass("show")
     }
   });
 
@@ -279,7 +265,7 @@ function maskPhoneField() {
   $.each(document.getElementsByClassName("phone-mask"), function (i, obj) {
     new IMask(
       obj, {
-        mask: '+{996} 000 000-000'
+        mask: '+{996}000000000'
       });
   });
 }

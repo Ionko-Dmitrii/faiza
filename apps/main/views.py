@@ -4,9 +4,12 @@ from django.conf import settings
 from django.db.models import Prefetch
 from django.http import JsonResponse
 from django.template import loader
+from django.utils.encoding import uri_to_iri
 from django.views import View
-from django.views.generic import TemplateView, ListView
+from django.views.generic import TemplateView, ListView, CreateView
 
+from apps.cart.forms import OrderForm
+from apps.cart.models import OrderItem, Order
 from apps.cart.utils import get_header_item_templates, set_cookie, \
     get_sum_products, get_cookie_list_from_cookie, get_product_list
 from apps.main.models import MainBanner, Product, Category, AboutUs, \
@@ -236,7 +239,6 @@ class ClearBasketView(View):
     def post(self, request, *args, **kwargs):
         cookie_list = []
         count_container = []
-
         context = dict(
             clear_basket=get_header_item_templates(cookie_list,
                                                    count_container),
@@ -245,7 +247,6 @@ class ClearBasketView(View):
         response = JsonResponse(context)
         set_cookie(response, settings.BASKET_COOKIE_NAME,
                    json.dumps(cookie_list))
-
         return response
 
 
@@ -279,7 +280,8 @@ class UpdateQuantityView(View):
         if request.POST.get('count'):
             product_count_list[index_product] = int(request.POST.get('count'))
         else:
-            product_count_list[index_product] = int(request.POST.get('count_two'))
+            product_count_list[index_product] = int(
+                request.POST.get('count_two'))
         cookie_list[index_product] = product_dict
         context_products = get_product_list(product_id_list, cookie_list, count)
         product_count_list.reverse()
@@ -301,3 +303,217 @@ class UpdateQuantityView(View):
                    json.dumps(cookie_list))
 
         return response
+
+
+class BasketRemoveProduct(View):
+    def post(self, request, *args, **kwargs):
+        cookie_list = get_cookie_list_from_cookie(request)
+
+        product_id = int(request.POST.get('productId'))
+        product_id_list = [i['product_id'] for i in cookie_list]
+
+        if product_id in product_id_list:
+            index_item = product_id_list.index(product_id)
+            del cookie_list[index_item]
+            product_id_list.remove(product_id)
+
+        context_products = get_product_list(product_id_list, cookie_list)
+
+        context = dict(
+            header_item=get_header_item_templates(
+                context_products["basket_prod_list"],
+                context_products["count_container"]
+            ),
+            sum_products=get_sum_products(
+                context_products["products"],
+                context_products["product_count_list"],
+                context_products["count_without_container"],
+                product_id_list,
+                context_products["count_products_small"],
+            ),
+        )
+
+        response = JsonResponse(context)
+        set_cookie(response, settings.BASKET_COOKIE_NAME,
+                   json.dumps(cookie_list))
+
+        return response
+
+
+class BasketAddRemoveProductBig(View):
+    def post(self, request, *args, **kwargs):
+        cookie_list = get_cookie_list_from_cookie(request)
+        count_two = [i['count_two'] for i in cookie_list]
+        count = [i['count'] for i in cookie_list]
+
+        product_id = int(request.POST.get('productId'))
+        product_id_list = [i['product_id'] for i in cookie_list]
+        index_item = product_id_list.index(product_id)
+
+        if count[index_item] > 0:
+            if count_two[index_item] > 0:
+                count = 0,
+                product_dict = dict(
+                    product_id=product_id,
+                    count=0,
+                    count_two=count_two[index_item],
+                )
+                cookie_list[index_item] = product_dict
+            else:
+                count = 1,
+                product_dict = dict(
+                    product_id=product_id,
+                    count=1,
+                    count_two=count_two[index_item],
+                )
+                cookie_list[index_item] = product_dict
+
+        else:
+            count = 1,
+            product_dict = dict(
+                product_id=product_id,
+                count=1,
+                count_two=count_two[index_item],
+            )
+            cookie_list[index_item] = product_dict
+
+        context_products = get_product_list(product_id_list, cookie_list)
+        count_container = sum(context_products["count_without_container"])
+
+        context = dict(
+            count_product=count_container,
+            sum_products=get_sum_products(
+                context_products["products"],
+                context_products["product_count_list"],
+                context_products["count_without_container"],
+                product_id_list,
+                context_products["count_products_small"],
+            ),
+            count_one=count,
+        )
+
+        response = JsonResponse(context)
+        set_cookie(response, settings.BASKET_COOKIE_NAME,
+                   json.dumps(cookie_list))
+
+        return response
+
+
+class BasketAddRemoveProductSmall(View):
+    def post(self, request, *args, **kwargs):
+        cookie_list = get_cookie_list_from_cookie(request)
+        count_two = [i['count_two'] for i in cookie_list]
+        count = [i['count'] for i in cookie_list]
+
+        product_id = int(request.POST.get('productId'))
+        product_id_list = [i['product_id'] for i in cookie_list]
+        index_item = product_id_list.index(product_id)
+
+        if count_two[index_item] > 0:
+            if count[index_item] > 0:
+                count_two = 0,
+                product_dict = dict(
+                    product_id=product_id,
+                    count=count[index_item],
+                    count_two=0,
+                )
+                cookie_list[index_item] = product_dict
+            else:
+                count_two = 1,
+                product_dict = dict(
+                    product_id=product_id,
+                    count=count[index_item],
+                    count_two=1,
+                )
+                cookie_list[index_item] = product_dict
+        else:
+            count_two = 1,
+            product_dict = dict(
+                product_id=product_id,
+                count=count[index_item],
+                count_two=1,
+            )
+            cookie_list[index_item] = product_dict
+
+        context_products = get_product_list(product_id_list, cookie_list)
+        count_container = sum(context_products["count_without_container"])
+
+        context = dict(
+            count_product=count_container,
+            sum_products=get_sum_products(
+                context_products["products"],
+                context_products["product_count_list"],
+                context_products["count_without_container"],
+                product_id_list,
+                context_products["count_products_small"],
+            ),
+            count_two=count_two,
+        )
+
+        response = JsonResponse(context)
+        set_cookie(response, settings.BASKET_COOKIE_NAME,
+                   json.dumps(cookie_list))
+
+        return response
+
+
+class OrderView(CreateView):
+    template_name = 'component/modal__ordering.html'
+    form_class = OrderForm
+
+    def post(self, request, *args, **kwargs):
+        cookie_list = get_cookie_list_from_cookie(request)
+        order = self.form_class(json.loads(request.POST.get('form_fields')))
+        price = request.POST.get('product_sum')
+        count_container = request.POST.get('count_container')
+        product_ids = [i['product_id'] for i in cookie_list]
+        count = [i['count'] for i in cookie_list]
+        count_two = [i['count_two'] for i in cookie_list]
+        products = Product.objects.filter(id__in=product_ids)
+        order_items = []
+        product_dict = dict((product.id, product) for product in products)
+        ordered_products = [
+            product_dict.get(product_item_id)
+            for product_item_id in product_ids
+        ]
+        sum_container = int(count_container)*8
+
+        if order.is_valid():
+            order_model = order.save(commit=False)
+            order_model.price = price
+            order_model.count_container = f'{count_container}шт.*8сом = {sum_container}сом'
+            order_model.save()
+
+            for product in ordered_products:
+                if product.price_two:
+                    price_two = product.price_two
+                else:
+                    price_two = 0
+                index_prod = ordered_products.index(product)
+                order_items.append(
+                    OrderItem(
+                        product=product, order=order_model,
+                        quantity_big=count[index_prod],
+                        quantity_small=count_two[index_prod],
+                        price_big=product.price,
+                        price_small=price_two,
+                    )
+                )
+
+            OrderItem.objects.bulk_create(order_items)
+
+            clear_basket = ClearBasketView()
+
+            response = clear_basket.post(self.request, *args, **kwargs)
+
+            return response
+        else:
+            order = self.form_class(json.loads(request.POST.get('form_fields')))
+            message = []
+
+            for item in order.errors:
+                message.append([item, order.errors[item]])
+
+            return JsonResponse(
+                dict(success=False, message=message), status=400
+            )

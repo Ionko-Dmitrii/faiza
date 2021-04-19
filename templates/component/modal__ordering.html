@@ -4,17 +4,20 @@
     <div class="modal">
       <h2>Оформление заказа</h2>
       <p>Укажите пожалуйста контактные данные для оформления доставки</p>
-      <form action="">
+      <form action="{% url 'order_form' %}" method="post" class="order-form">
+        {% csrf_token %}
         <div class="input">
-          <input type="text" placeholder="Ваше имя *" required="required"/>
+          <input type="text" class="input_form" name="name" placeholder="Ваше имя *" required="required"/>
+          <span class=error></span>
         </div>
         <div class="input">
-          <input class="phone-mask" type="text"
+          <input class="phone-mask input_form" name="phone" type="text"
                  placeholder="Ваш телефон *" required="required"/>
+          <span class=error></span>
         </div>
         <div class="input">
-          <textarea placeholder="Комментарий к заказу" required="required">
-          </textarea>
+          <textarea class="input_form" placeholder="Комментарий к заказу" name="comment"></textarea>
+          <span class=error></span>
         </div>
         <button class="disabled-btn" type="submit" disabled="disabled">
           Оформить доставку

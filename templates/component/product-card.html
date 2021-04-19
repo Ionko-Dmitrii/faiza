@@ -1,15 +1,15 @@
 {% load static %}
 
 <div class="dish-card">
-  <div class="open-card-detail"
-       data-url="{% url 'product_url' item.id %}"
-       data-product-id="{{ item.id }}">
-  </div>
   <div class="dish-card_heading">
     <h3 data-mh="height">{{ item.title }}</h3>
     <div class="dish-card_img">
       <img src="{{ item.image.url }}" alt="load img"/>
     </div>
+  </div>
+  <div class="open-card-detail"
+       data-url="{% url 'product_url' item.id %}"
+       data-product-id="{{ item.id }}">
   </div>
   <div class="dish-card_description">
     <p>{{ item.description|truncatechars:100 }}</p>
@@ -26,12 +26,15 @@
       {% endif %}
     </div>
     <div class="add_cart_but_wrapper">
-      <div class="add-cart add-cart-one" data-url="{% url 'basket_url' item.id %}"
+      <div class="add-cart add-cart-one"
+           data-url="{% url 'basket_url' item.id %}"
            data-product-id="{{ item.id }}">добавить В заказ
       </div>
       {% if item.portion_two %}
-        <div class="add-cart add-cart-two hide" data-url="{% url 'basket_two_url' item.id %}"
-           data-product-id="{{ item.id }}">добавить В заказ</div>
+        <div class="add-cart add-cart-two hide"
+             data-url="{% url 'basket_two_url' item.id %}"
+             data-product-id="{{ item.id }}">добавить В заказ
+        </div>
       {% endif %}
     </div>
   </div>

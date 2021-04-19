@@ -1,0 +1,9 @@
+{% load static %}
+<div>
+  {% if image %}
+    <img src="{{ image }}" alt="{{ title }}" style="width: 200px"/>
+  {% else %}
+    <img src="{% static 'img/jpg/home-banner.jpg' %}" alt="{{ title }}"
+         style="width: 200px"/>
+  {% endif %}
+</div>

@@ -2,6 +2,7 @@ import datetime
 import json
 
 from django.template import loader
+from django.utils.encoding import uri_to_iri
 
 from apps.main.models import Product
 from core import settings
@@ -24,6 +25,7 @@ def set_cookie(response, key, value, days_expire=60):
         "%a, %d-%b-%Y %H:%M:%S GMT"
     )
     response.set_cookie(key, value, max_age=max_age, expires=expires)
+
     return response
 
 
@@ -40,7 +42,8 @@ def get_sum_products(
         products, count_products, count_without_container, product_id_list,
         count_products_small):
     products_dict = dict((product.id, product.price) for product in products)
-    products_dict_small = dict((product.id, product.price_two) for product in products)
+    products_dict_small = dict(
+        (product.id, product.price_two) for product in products)
 
     product_id_list.reverse()
 
@@ -66,9 +69,11 @@ def get_sum_products(
                  zip(map(int, ordered_products), count_products)]
 
     sum_count_small = [i * j for i, j in
-                 zip(map(int, ordered_products_small), count_products_small)]
+                       zip(map(int, ordered_products_small),
+                           count_products_small)]
 
-    products_sum = sum(sum_count) + sum(sum_count_small) + (sum(count_without_container) * 8)
+    products_sum = sum(sum_count) + sum(sum_count_small) + (
+                sum(count_without_container) * 8)
     return products_sum
 
 
@@ -126,7 +131,7 @@ def get_product_list(product_id_list, cookie_list, count=1):
     count_container_list.reverse()
     for count, count_two in zip(
             cookie_count_for_container, product_count_two_list):
-        count_container_list.append(count+count_two)
+        count_container_list.append(count + count_two)
     count_container = sum(count_container_list)
 
     context = {

@@ -24,10 +24,19 @@
             {% endif %}
           </div>
           {% if product %}
-            <div class="add-cart" data-url="{% url 'basket_url' product.id %}"
-                 data-product-id="{{ product.id }}">
-              добавить В заказ
-            </div>
+            <div class="add_cart_but_wrapper">
+              <div class="add-cart add-cart-one"
+                   data-url="{% url 'basket_url' product.id %}"
+                   data-product-id="{{ product.id }}">
+                добавить В заказ
+              </div>
+              {% if product.portion_two %}
+                <div class="add-cart add-cart-two hide"
+                     data-url="{% url 'basket_two_url' product.id %}"
+                     data-product-id="{{ product.id }}">добавить В заказ
+                </div>
+                </div>
+              {% endif %}
           {% endif %}
         </div>
       </div>

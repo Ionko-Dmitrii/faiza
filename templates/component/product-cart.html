@@ -13,13 +13,12 @@
             <div class="cost-dish_number portion_big">
               <div class="cost-dish cart-portion-selection
                     {% if count %}active{% endif %}"
-                   data-url="{% url 'basket_url' product.id %}"
+                   data-url="{% url 'remove_add_big' product.id %}"
                    data-product-id="{{ product.id }}">
                 <span>{{ product.portion }}/</span>
                 <span>{{ product.price }}c</span>
               </div>
-              <div class=" number-block {% if count %}show{% endif %}
-              ">
+              <div class=" number-block {% if count %}show{% endif %}">
                 <div class="minus minus-js button-count-ajax"
                      data-url="{% url 'update_quantity' product.id %}"></div>
                 <div class="input">
@@ -35,7 +34,7 @@
                 <div
                   class="cost-dish cart-portion-selection
                     {% if count_two %}active{% endif %}"
-                  data-url="{% url 'basket_two_url' product.id %}"
+                  data-url="{% url 'remove_add_small' product.id %}"
                   data-product-id="{{ product.id }}">
                   <span>{{ product.portion_two }}/</span>
                   <span>{{ product.price_two }}c</span>

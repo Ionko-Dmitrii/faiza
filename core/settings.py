@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # custom apps
     'apps.main',
+    'apps.cart',
 
     # libraries
     'django_cleanup',
