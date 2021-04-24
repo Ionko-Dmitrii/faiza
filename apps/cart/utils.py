@@ -73,7 +73,7 @@ def get_sum_products(
                            count_products_small)]
 
     products_sum = sum(sum_count) + sum(sum_count_small) + (
-                sum(count_without_container) * 8)
+            sum(count_without_container) * 8)
     return products_sum
 
 
@@ -144,3 +144,21 @@ def get_product_list(product_id_list, cookie_list, count=1):
     }
 
     return context
+
+
+def get_all_telegram_text(order, products, price, count, count_two):
+    text = f"""
+    Новый заказ!\n
+    Имя клиента: {order.name}
+    Тел клиента: {order.phone}
+    Итого: {price}\n\n"""
+
+    for product in products:
+        index_prod = products.index(product)
+        dish_name = f'{product.title}\n' \
+                    f'{product.portion} - {product.price} сом - {count[index_prod]} порций\n'
+        if product.price_two:
+            dish_name += f'{product.portion_two} - {product.price_two} сом - {count_two[index_prod]} порций\n'
+        text += dish_name + '\n'
+
+    return text

@@ -1,6 +1,5 @@
 from django.contrib import admin
 from django.template import loader
-from django.urls import reverse_lazy
 
 from apps.cart.models import Order, OrderItem
 
@@ -36,5 +35,5 @@ class OrderAdmin(admin.ModelAdmin):
     readonly_fields = ('name', 'phone', 'comment', 'price', 'count_container')
     inlines = [OrderItemInline]
 
-    # def has_delete_permission(self, request, *args, **kwargs):
-    #     return False
+    def has_delete_permission(self, request, *args, **kwargs):
+        return False

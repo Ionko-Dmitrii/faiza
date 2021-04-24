@@ -4,16 +4,20 @@ from django.conf import settings
 from django.db.models import Prefetch
 from django.http import JsonResponse
 from django.template import loader
-from django.utils.encoding import uri_to_iri
 from django.views import View
 from django.views.generic import TemplateView, ListView, CreateView
 
+from apps.cart.bot import send_telegram_notification
 from apps.cart.forms import OrderForm
-from apps.cart.models import OrderItem, Order
-from apps.cart.utils import get_header_item_templates, set_cookie, \
-    get_sum_products, get_cookie_list_from_cookie, get_product_list
-from apps.main.models import MainBanner, Product, Category, AboutUs, \
-    SliderAboutUsOne, SliderAboutUsTwo, SliderAboutUsThree, Contact
+from apps.cart.models import OrderItem
+from apps.cart.utils import (
+    get_header_item_templates, set_cookie, get_sum_products,
+    get_cookie_list_from_cookie, get_product_list, get_all_telegram_text
+)
+from apps.main.models import (
+    MainBanner, Product, Category, AboutUs, SliderAboutUsOne, SliderAboutUsTwo,
+    SliderAboutUsThree, Contact
+)
 
 
 class MainPageView(TemplateView):
@@ -25,7 +29,7 @@ class MainPageView(TemplateView):
         context['about_us_text'] = AboutUs.objects.first()
         context['categories'] = (
             Category.objects.all()
-                .prefetch_related(
+            .prefetch_related(
                 Prefetch('category_product',
                          Product.objects.filter(
                              is_populate=True,
@@ -476,13 +480,16 @@ class OrderView(CreateView):
             product_dict.get(product_item_id)
             for product_item_id in product_ids
         ]
-        sum_container = int(count_container)*8
+        sum_container = int(count_container) * 8
 
         if order.is_valid():
             order_model = order.save(commit=False)
             order_model.price = price
             order_model.count_container = f'{count_container}шт.*8сом = {sum_container}сом'
             order_model.save()
+            text = get_all_telegram_text(order_model, ordered_products, price,
+                                         count, count_two)
+            send_telegram_notification(text, 853892764)
 
             for product in ordered_products:
                 if product.price_two:
